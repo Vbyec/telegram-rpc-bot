@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { execFile } from 'child_process';
 import TelegramBot, { Message } from 'node-telegram-bot-api';
 import { RPCBotConfig } from './interfaces';
 
@@ -61,7 +61,7 @@ export class RPCBot {
         this.onBotAddedToNewGroup(message);
       }
 
-      exec(`./${this.getCommandPath(message)} ${query}`, (error, stdout, stderr) => {
+      execFile(this.getCommandPath(message), [query], (error, stdout, stderr) => {
         if (error !== null) {
           console.error('error', error);
           console.error('stderr', stderr);
@@ -69,7 +69,7 @@ export class RPCBot {
         } else if (stdout) {
           // @todo.Alisov Предусмотреть вариант, когда ответ слишком большой и отсылать файл тогда
           console.log('Посылаю ответ');
-          this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id });
+          this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id, parse_mode: 'MarkdownV2' });
         } else {
           console.log('Ошибок при выполнении скрипта не было, ответа тоже, возможно скрипт пустой.');
         }
