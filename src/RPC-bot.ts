@@ -1,3 +1,5 @@
+process.env.NTBA_FIX_319 = '1';
+
 import { execFile } from 'child_process';
 import TelegramBot, { Message } from 'node-telegram-bot-api';
 import { RPCBotConfig } from './interfaces';
@@ -69,7 +71,7 @@ export class RPCBot {
         } else if (stdout) {
           // @todo.Alisov Предусмотреть вариант, когда ответ слишком большой и отсылать файл тогда
           console.log('Посылаю ответ');
-          this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id, parse_mode: 'MarkdownV2' });
+          this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id });
         } else {
           console.log('Ошибок при выполнении скрипта не было, ответа тоже, возможно скрипт пустой.');
         }

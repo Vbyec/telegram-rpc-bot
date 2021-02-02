@@ -1,5 +1,3 @@
-process.env.NTBA_FIX_319 = '1';
-
 import { RPCBot } from './RPC-bot';
 import { RPCBotConfig } from './interfaces';
 

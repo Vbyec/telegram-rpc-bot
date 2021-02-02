@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "nodemon",
-    "build": "npx tsc && cp src/config.example.json dist/config.json"
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "Vbyec",
