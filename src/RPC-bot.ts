@@ -8,7 +8,7 @@ const fs = require('fs');
 const os = require('os');
 
 export class RPCBot {
-  private bot: TelegramBot = new TelegramBot(this.config.token, { polling: true });
+  public bot: TelegramBot = new TelegramBot(this.config.token, { polling: true });
   private commandFolderPath = 'commands/';
 
   public constructor (

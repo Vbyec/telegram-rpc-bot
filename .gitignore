@@ -1,3 +1,5 @@
 /src/config.json
 /dist
 /commands
+/.idea
+/node_modules
