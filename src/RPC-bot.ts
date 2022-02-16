@@ -57,7 +57,7 @@ export class RPCBot {
             console.log('Посылаю ответ');
             this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id })
                 .catch(error => {
-                  if (error.code == 'ETELEGRAM' && error.response?.body?.description?.indexOf('message is too long')) {
+                  if (error.code == 'ETELEGRAM' && error.response?.body?.description?.includes('message is too long')) {
                     return this.bot.sendDocument(chatId, Buffer.from(stdout, 'utf8'), {
                       reply_to_message_id: message.message_id
                     }, {
