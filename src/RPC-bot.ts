@@ -51,11 +51,24 @@ export class RPCBot {
           if (error !== null) {
             console.error('error', error);
             console.error('stderr', stderr);
-            this.bot.sendMessage(chatId, 'Ошибка выполнения команды, подробности в логе', { reply_to_message_id: message.message_id });
+            this.bot.sendMessage(chatId, 'Ошибка выполнения команды, подробности в логе', { reply_to_message_id: message.message_id })
+                .catch(error => console.error('sendMessage', error));
           } else if (stdout) {
-            // @todo.Alisov Предусмотреть вариант, когда ответ слишком большой и отсылать файл тогда
             console.log('Посылаю ответ');
-            this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id });
+            this.bot.sendMessage(chatId, stdout, { reply_to_message_id: message.message_id })
+                .catch(error => {
+                  if (error.code == 'ETELEGRAM' && error.response?.body?.description?.indexOf('message is too long')) {
+                    return this.bot.sendDocument(chatId, stdout, {
+                      reply_to_message_id: message.message_id
+                    }, {
+                      filename: '' + message.message_id + '.log',
+                      contentType: 'text/plain'
+                    });
+                  }
+                  else throw error;
+                  // @todo отправлять сообщение "что-то пошло не так" в чат
+                })
+                .catch(error => console.error('sendMessage', error));
           } else {
             console.log('Ошибок при выполнении скрипта не было, ответа тоже, возможно скрипт пустой.');
           }
@@ -72,7 +85,8 @@ export class RPCBot {
     this.bot.onText(new RegExp(`^/getChatId`), (message) => {
       console.log('Получена команда на определение id чата.', JSON.stringify(message));
       const chatId = message.chat.id;
-      this.bot.sendMessage(chatId, chatId.toString(), { reply_to_message_id: message.message_id });
+      this.bot.sendMessage(chatId, chatId.toString(), { reply_to_message_id: message.message_id })
+          .catch(error => console.error('sendMessage', error));
     });
   }
 
