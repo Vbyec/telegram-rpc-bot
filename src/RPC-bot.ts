@@ -61,7 +61,7 @@ export class RPCBot {
                     return this.bot.sendDocument(chatId, Buffer.from(stdout, 'utf8'), {
                       reply_to_message_id: message.message_id
                     }, {
-                      filename: '' + message.message_id + '.log',
+                      filename: '' + message.message_id + '.txt',
                       contentType: 'text/plain'
                     });
                   }
