@@ -91,7 +91,7 @@ export class RPCBot {
   }
 
   private getCommandPath (message: Message): string {
-    return this.commandFolderPath + `chat_${message.chat.id}.sh`;
+    return __dirname + '/' + this.commandFolderPath + `chat_${message.chat.id}.sh`;
   }
 }
 
